@@ -82,9 +82,9 @@ class InterSwitchAPI(object):
         terminating_account_type,
         terminaing_entity_code,
     ):
-        '''
+        """
         Documentation: https://sandbox.interswitchng.com/docbase/docs/quickteller-sva/funds-transfer/
-        '''
+        """
         url = self.base_url + Constants.QT_BASE_URL + Constants.TRANSFER_FUNDS_URL
         headers = {Constants.TERMINAL_ID: self.terminal_id}
 
@@ -124,9 +124,39 @@ class InterSwitchAPI(object):
             "transferCode": "1413{}".format(utils.generate_timestamp()),
         }
 
-    
         response = self.make_request(url, "POST", data, headers)
         return response
+
+    def transfer_to_nigerain_account(
+        self,
+        sender_last_name,
+        sender_other_names,
+        beneficiary_last_name,
+        beneficiary_other_names,
+        account_number,
+        bank_code,
+        account_type,
+        amount
+    ):
+
+        return self.transfer_funds(
+            initiating_entity_code="ERT",
+            sender_last_name=sender_last_name,
+            sender_other_names=sender_other_names,
+            beneficiary_last_name=beneficiary_last_name,
+            beneficiary_other_names=beneficiary_other_names,
+            initiation_amount=amount,
+            initiation_channel="7",
+            initiation_payment_method_code="CA",
+            initiation_currency_code="566",
+            terminaing_paymet_method_code="AC",
+            terminating_amount=amount,
+            terminating_currency_code="566",
+            terminating_country_code="NG",
+            terminating_account_number=account_number,
+            terminating_account_type=account_type,
+            terminaing_entity_code=bank_code,
+        )
 
     def make_request(self, url, method, data, extra_headers):
 
