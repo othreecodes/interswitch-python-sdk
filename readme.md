@@ -1,4 +1,11 @@
+#Description
+ISWTransfer
+This module will allow Cowrywise to interface with the Interswitch transfer service.
+
+The transfer service will allow us to move funds from CowryWise account with Interswitch to a customer's bank account.
+
 # Usage
+
 
 ```python
 
@@ -13,3 +20,5 @@ result = api.get_billers()
 
 print(result)
 ```
+
+See `test_interswitch.py` for more usages
