@@ -1,2 +1,6 @@
 venv/
-.idea/*
+.idea
+.vscode
+__pycache__
+.pytest_cache
+.idea/vcs.xml
