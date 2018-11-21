@@ -1,9 +1,9 @@
 import base64
 import requests
-from exceptions import InterswitchAPIException
-from request_headers import RequestHeaders
-from constants import Constants
-import utils
+from interswitch.exceptions import InterswitchAPIException
+from interswitch.request_headers import RequestHeaders
+from interswitch.constants import Constants
+from interswitch import utils
 
 
 class InterSwitchAPI(object):

@@ -1,7 +1,7 @@
 from urllib import parse
 
-import utils
-from constants import Constants
+from interswitch import utils
+from interswitch.constants import Constants
 
 
 def _get_signature(

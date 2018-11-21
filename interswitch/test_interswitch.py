@@ -1,7 +1,7 @@
 import pytest
-from interswitch import InterSwitchAPI
-from exceptions import InterswitchAPIException
-from constants import Constants
+from interswitch.api import InterSwitchAPI
+from interswitch.exceptions import InterswitchAPIException
+from interswitch.constants import Constants
 
 
 class TestInterSwitch(object):
