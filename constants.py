@@ -38,6 +38,8 @@ class Constants(object):
     ACCOUNT_ID = "accountId"
     HTTP_GET = "GET"
     HTTP_POST = "POST"
+    CONTENT_TYPE = "Content-Type"
+    FORM_URL_ENCODED = "application/x-www-form-urlencoded"
 
     # Transfer
     # get bank code

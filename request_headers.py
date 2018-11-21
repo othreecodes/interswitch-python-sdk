@@ -1,15 +1,12 @@
-from constants import Constants
-import utils
-import uuid
-import time
-import utils
 from urllib import parse
+
+import utils
+from constants import Constants
 
 
 def _get_signature(
-    client_id, client_secret_key, resource_url: str, http_method, timestamp, nonce
+        client_id, client_secret_key, resource_url: str, http_method, timestamp, nonce
 ):
-
     resource_url = parse.quote_plus(resource_url)
 
     signature_cipher = "{}&{}&{}&{}&{}&{}".format(
@@ -21,8 +18,8 @@ def _get_signature(
 
 class RequestHeaders(object):
     @staticmethod
-    def beader_security_request_headers(
-        client_id, client_secret_key, access_token, resource_url, http_method
+    def bearer_security_request_headers(
+            client_id, client_secret_key, access_token, resource_url, http_method
     ):
         headers = {}
 
@@ -36,7 +33,7 @@ class RequestHeaders(object):
         headers[Constants.SIGNATURE_METHOD] = Constants.SIGNATURE_METHOD_VALUE
         headers[Constants.TIMESTAMP] = timestamp
         headers[Constants.AUTHORIZATION] = (
-            Constants.BEARER_AUTHORIZATION_REALM + " " + access_token
+                Constants.BEARER_AUTHORIZATION_REALM + " " + access_token
         )
 
         return headers

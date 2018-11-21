@@ -1,4 +1,3 @@
-from constants import Constants
 import base64
 import requests
 from exceptions import InterswitchAPIException
@@ -25,8 +24,8 @@ class InterSwitchAPI(object):
         auth_cipher = self.client_id + ":" + self.client_secret
         basic_auth = base64.encodebytes(bytes(auth_cipher, "utf-8"))
         headers = {
-            "Content-Type": "application/x-www-form-urlencoded",
-            "Authorization": "Basic {}".format(
+            Constants.CONTENT_TYPE: Constants.FORM_URL_ENCODED,
+            Constants.AUTHORIZATION: "Basic {}".format(
                 basic_auth.decode("utf-8").strip().replace("\n", "")
             ),
         }
@@ -74,13 +73,13 @@ class InterSwitchAPI(object):
         initiation_channel,
         initiation_payment_method_code,
         initiation_currency_code,
-        terminaing_paymet_method_code,
+        terminating_payment_method_code,
         terminating_amount,
         terminating_currency_code,
         terminating_country_code,
         terminating_account_number,
         terminating_account_type,
-        terminaing_entity_code,
+        terminating_entity_code,
     ):
         """
         Documentation: https://sandbox.interswitchng.com/docbase/docs/quickteller-sva/funds-transfer/
@@ -95,7 +94,7 @@ class InterSwitchAPI(object):
                 initiation_payment_method_code,
                 terminating_amount,
                 terminating_currency_code,
-                terminaing_paymet_method_code,
+                terminating_payment_method_code,
                 terminating_country_code,
             ),
             "beneficiary": {
@@ -118,8 +117,8 @@ class InterSwitchAPI(object):
                 "amount": terminating_amount,
                 "countryCode": terminating_country_code,
                 "currencyCode": terminating_currency_code,
-                "entityCode": terminaing_entity_code,
-                "paymentMethodCode": terminaing_paymet_method_code,
+                "entityCode": terminating_entity_code,
+                "paymentMethodCode": terminating_payment_method_code,
             },
             "transferCode": "1413{}".format(utils.generate_timestamp()),
         }
@@ -127,7 +126,7 @@ class InterSwitchAPI(object):
         response = self.make_request(url, "POST", data, headers)
         return response
 
-    def transfer_to_nigerain_account(
+    def transfer_to_nigerian_account(
         self,
         sender_last_name,
         sender_other_names,
@@ -149,24 +148,24 @@ class InterSwitchAPI(object):
             initiation_channel="7",
             initiation_payment_method_code="CA",
             initiation_currency_code="566",
-            terminaing_paymet_method_code="AC",
+            terminating_payment_method_code="AC",
             terminating_amount=amount,
             terminating_currency_code="566",
             terminating_country_code="NG",
             terminating_account_number=account_number,
             terminating_account_type=account_type,
-            terminaing_entity_code=bank_code,
+            terminating_entity_code=bank_code,
         )
 
     def make_request(self, url, method, data, extra_headers):
 
         access_token = self.get_client_access_token()
 
-        headers = RequestHeaders.beader_security_request_headers(
+        headers = RequestHeaders.bearer_security_request_headers(
             self.client_id, self.client_secret, access_token, url, method
         )
 
-        if extra_headers != None:
+        if extra_headers is not None:
             headers.update(extra_headers)
 
         if method == "GET":

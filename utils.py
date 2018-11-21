@@ -20,8 +20,7 @@ def hash_sha1_only(val):
     return hashlib.sha1(val).digest()
 
 
-def generate_mac(a,b,c,d,e,f,g):
-    
-    data = hashlib.sha512("{}{}{}{}{}{}{}".format(a,b,c,d,e,f,g).encode('utf-8')).hexdigest()
-   
+def generate_mac(a, b, c, d, e, f, g):
+    data = hashlib.sha512("{}{}{}{}{}{}{}".format(a, b, c, d, e, f, g).encode('utf-8')).hexdigest()
+
     return data

@@ -1,11 +1,10 @@
-import requests
 import pytest
 from interswitch import InterSwitchAPI
 from exceptions import InterswitchAPIException
 from constants import Constants
 
 
-class TestInterswitch(object):
+class TestInterSwitch(object):
     def test_user_can_fetch_acces_token_from_passport(self):
         api = InterSwitchAPI(
             client_secret="FTbMeBD7MtkGBQJw1XoM74NaikuPL13Sxko1zb0DMjI=",
@@ -16,7 +15,7 @@ class TestInterswitch(object):
 
         token = api.get_client_access_token()
 
-        assert token != None
+        assert token is not None
 
     def test_api_raises_exception_for_invalid_credentials(self):
         api = InterSwitchAPI(
@@ -27,7 +26,7 @@ class TestInterswitch(object):
         )
 
         with pytest.raises(InterswitchAPIException) as e_info:
-            token = api.get_client_access_token()
+            api.get_client_access_token()
 
         assert e_info.value.args[0] == "Bad credentials"
 
@@ -86,13 +85,13 @@ class TestInterswitch(object):
             initiation_channel="7",
             initiation_payment_method_code="CA",
             initiation_currency_code="566",
-            terminaing_paymet_method_code="AC",
+            terminating_payment_method_code="AC",
             terminating_amount="100000",
             terminating_currency_code="566",
             terminating_country_code="NG",
             terminating_account_number="0014261063",
             terminating_account_type="10",
-            terminaing_entity_code="058",
+            terminating_entity_code="058",
         )
 
         assert result['responseCode'] == "90000"
