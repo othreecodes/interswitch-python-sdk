@@ -5,8 +5,6 @@ This module will allow Cowrywise to interface with the Interswitch transfer serv
 The transfer service will allow us to move funds from CowryWise account with Interswitch to a customer's bank account.
 
 # Usage
-
-
 ```python
 
 api = InterSwitchAPI(
@@ -21,4 +19,8 @@ result = api.get_billers()
 print(result)
 ```
 
+# Run tests
+```
+$ pytest interswitch/test_interswitch.py
+```
 See `test_interswitch.py` for more usages
