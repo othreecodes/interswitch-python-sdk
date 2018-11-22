@@ -14,9 +14,9 @@ class InterSwitchAPI(object):
         self.terminal_id = terminal_id
         if env == Constants.ENV_SANDBOX:
             self.base_url = Constants.SANDBOX_BASE_URL
-        elif env == Constants.DEV_BASE_URL:
+        elif env == Constants.ENV_DEV:
             self.base_url = Constants.DEV_BASE_URL
-        elif env == Constants.PRODUCTION_BASE_URL:
+        elif env == Constants.ENV_PROD:
             self.base_url = Constants.PRODUCTION_BASE_URL
 
     def get_client_access_token(self):
@@ -157,6 +157,16 @@ class InterSwitchAPI(object):
             terminating_entity_code=bank_code,
         )
 
+    def query_transaction(self,request_reference):
+        url = self.base_url + Constants.QT_BASE_URL + Constants.TRANSACTIONS_URL
+        headers = {Constants.TERMINAL_ID: self.terminal_id}
+
+        
+        url+="?requestreference={}".format(request_reference)
+
+        response = self.make_request(url, "GET", None, headers)
+        return response
+
     def make_request(self, url, method, data, extra_headers):
 
         access_token = self.get_client_access_token()
@@ -169,6 +179,7 @@ class InterSwitchAPI(object):
             headers.update(extra_headers)
 
         if method == "GET":
+            
             return requests.get(url, data=data, headers=headers).json()
         else:
             return requests.post(url, json=data, headers=headers).json()

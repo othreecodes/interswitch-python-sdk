@@ -39,6 +39,7 @@ class TestInterSwitch(object):
         )
 
         result = api.get_billers()
+        
 
         assert "billers" in result
 
@@ -51,7 +52,6 @@ class TestInterSwitch(object):
         )
 
         result = api.get_bank_codes()
-
         assert "banks" in result
 
     def test_user_can_fetch_owner_of_account_number_from_api(self):
@@ -93,5 +93,8 @@ class TestInterSwitch(object):
             terminating_account_type="10",
             terminating_entity_code="058",
         )
-
+        
         assert result['responseCode'] == "90000"
+        res = api.query_transaction(result['transferCode'])
+        
+        assert res['transactionResponseCode'] == "90000"

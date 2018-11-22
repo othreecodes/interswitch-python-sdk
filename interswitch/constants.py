@@ -15,6 +15,7 @@ class Constants(object):
 
     PASSPORT_RESOURCE_URL = "passport/oauth/token"
     BILLERS_URL = "billers"
+    TRANSACTIONS_URL= "transactions"
     BANK_CODES_URL = "configuration/fundstransferbanks"
     NAME_ENQUIRY_URL = "api/v1/nameenquiry/banks/accounts/names"
     TRANSFER_FUNDS_URL = "payments/transfers"
