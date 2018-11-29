@@ -1,9 +1,10 @@
 #Description
-ISWTransfer
-This module will allow Cowrywise to interface with the Interswitch transfer service.
+Interswitch python client lib
 
-The transfer service will allow us to move funds from CowryWise account with Interswitch to a customer's bank account.
-
+# installation 
+```
+$ pip install -e git@github.com:othreecodes/interswitch-python-sdk.git 
+```
 # Usage
 ```python
 
