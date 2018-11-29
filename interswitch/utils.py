@@ -16,11 +16,17 @@ def hash_sha1(val):
     return base64.b64encode(hashlib.sha1(val).digest())
 
 
+def base_64(val):
+    return base64.b64encode(bytes(val, "utf-8")).decode("utf-8")
+
+
 def hash_sha1_only(val):
     return hashlib.sha1(val).digest()
 
 
 def generate_mac(a, b, c, d, e, f, g):
-    data = hashlib.sha512("{}{}{}{}{}{}{}".format(a, b, c, d, e, f, g).encode('utf-8')).hexdigest()
+    data = hashlib.sha512(
+        "{}{}{}{}{}{}{}".format(a, b, c, d, e, f, g).encode("utf-8")
+    ).hexdigest()
 
     return data

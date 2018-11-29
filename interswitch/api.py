@@ -7,7 +7,7 @@ from interswitch import utils
 
 
 class InterSwitchAPI(object):
-    def __init__(self, client_secret, client_id, env, terminal_id) -> None:
+    def __init__(self, client_secret, client_id, env, terminal_id=None) -> None:
 
         self.client_secret = client_secret
         self.client_id = client_id
@@ -59,7 +59,7 @@ class InterSwitchAPI(object):
         url = self.base_url + Constants.NAME_ENQUIRY_URL
         headers = {Constants.BANK_CODE: bank_code, Constants.ACCOUNT_ID: account_number}
 
-        response = self.make_request(url, "GET", None, headers)
+        response = self.make_isw_request(url, "GET", None, headers)
         return response
 
     def transfer_funds(
@@ -135,7 +135,7 @@ class InterSwitchAPI(object):
         account_number,
         bank_code,
         account_type,
-        amount
+        amount,
     ):
 
         return self.transfer_funds(
@@ -157,14 +157,96 @@ class InterSwitchAPI(object):
             terminating_entity_code=bank_code,
         )
 
-    def query_transaction(self,request_reference):
+    def query_transaction(self, request_reference):
         url = self.base_url + Constants.QT_BASE_URL + Constants.TRANSACTIONS_URL
         headers = {Constants.TERMINAL_ID: self.terminal_id}
 
-        
-        url+="?requestreference={}".format(request_reference)
+        url += "?requestreference={}".format(request_reference)
 
         response = self.make_request(url, "GET", None, headers)
+        return response
+
+    def get_biller_categories(self):
+        url = self.base_url + Constants.QT_BASE_URL + Constants.CATEGORY_URL
+
+        response = self.make_request(url, "GET", None, None)
+        return response
+
+    def get_billers_by_category(self, id):
+        url = (
+            self.base_url
+            + Constants.QT_BASE_URL
+            + Constants.CATEGORY_URL
+            + "/{}/{}".format(id, Constants.BILLERS_URL)
+        )
+
+        response = self.make_request(url, "GET", None, None)
+
+        return response
+
+    def get_biller_payments(self, biller_id):
+        url = (
+            self.base_url
+            + Constants.QT_BASE_URL
+            + Constants.BILLERS_URL
+            + "/{}/{}".format(biller_id, Constants.PAYMENT_ITEMS_URL)
+        )
+
+        headers = {Constants.TERMINAL_ID: self.terminal_id}
+        response = self.make_request(url, "GET", None, headers)
+
+        return response
+
+    def send_bill_payment_advice(
+        self, payment_code, customer_id, customer_mobile, customer_email, amount
+    ):
+        url = self.base_url + Constants.QT_BASE_URL + Constants.PAYMENT_ADVICES_URL
+        data = {
+            "terminalId": self.terminal_id,
+            "paymentCode": payment_code,
+            "customerId": customer_id,
+            "customerMobile": customer_mobile,
+            "customerEmail": customer_email,
+            "amount": amount,
+            "requestReference": "1456{}".format(utils.generate_timestamp()),
+        }
+
+        headers = {Constants.TERMINAL_ID: self.terminal_id}
+        response = self.make_isw_request(url, "POST", data, headers)
+
+        return response
+
+    def bill_payment_inquiry(
+        self, payment_code, customer_id, customer_mobile, customer_email
+    ):
+        url = (
+            self.base_url
+            + Constants.QT_BASE_URL
+            + "{}/{}".format(Constants.TRANSACTIONS_URL, Constants.INQUIRY_URL)
+        )
+
+        data = {
+            "paymentCode": payment_code,
+            "customerId": customer_id,
+            "customerMobile": customer_mobile,
+            "customerEmail": customer_email,
+        }
+
+        headers = {Constants.TERMINAL_ID: self.terminal_id}
+
+        response = self.make_isw_request(url, "POST", data, headers)
+
+        return response
+
+    def customer_validation(self, customers):
+        url = self.base_url + Constants.QT_BASE_URL + Constants.CUSTOMER_VALIDATION_URL
+
+        data = {"customers": customers}
+
+        headers = {Constants.TERMINAL_ID: self.terminal_id}
+
+        response = self.make_isw_request(url, "POST", data, headers)
+
         return response
 
     def make_request(self, url, method, data, extra_headers):
@@ -179,7 +261,22 @@ class InterSwitchAPI(object):
             headers.update(extra_headers)
 
         if method == "GET":
-            
+
+            return requests.get(url, data=data, headers=headers).json()
+        else:
+            return requests.post(url, json=data, headers=headers).json()
+
+    def make_isw_request(self, url, method, data, extra_headers):
+
+        headers = RequestHeaders.isw_security_request_headers(
+            self.client_id, self.client_secret, url, method
+        )
+
+        if extra_headers is not None:
+            headers.update(extra_headers)
+
+        if method == "GET":
+
             return requests.get(url, data=data, headers=headers).json()
         else:
             return requests.post(url, json=data, headers=headers).json()

@@ -15,10 +15,15 @@ class Constants(object):
 
     PASSPORT_RESOURCE_URL = "passport/oauth/token"
     BILLERS_URL = "billers"
-    TRANSACTIONS_URL= "transactions"
+    CATEGORY_URL = "categorys"
+    TRANSACTIONS_URL = "transactions"
     BANK_CODES_URL = "configuration/fundstransferbanks"
     NAME_ENQUIRY_URL = "api/v1/nameenquiry/banks/accounts/names"
     TRANSFER_FUNDS_URL = "payments/transfers"
+    PAYMENT_ITEMS_URL = "paymentitems"
+    PAYMENT_ADVICES_URL = "payments/advices"
+    INQUIRY_URL = "inquirys"
+    CUSTOMER_VALIDATION_URL = "customers/validations"
 
     TIMESTAMP = "Timestamp"
     NONCE = "Nonce"
